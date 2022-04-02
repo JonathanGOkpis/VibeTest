@@ -1,0 +1,107 @@
+﻿@page "/counter"
+
+<PageTitle>Counter</PageTitle>
+
+<h1>Counter</h1>
+
+<p role="status">Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<select @onchange="@ChangeDate">
+    <option value="Hoje">
+        Hoje
+    </option>
+    <option value="Ontem">
+        Ontem
+    </option>
+    <option value="Esta semana">
+        Esta semana
+    </option>
+    <option value="Este mes">
+        Este mês
+    </option>
+    <option value="30 dias">
+        Últimos 30 dias
+    </option>
+    <option value="Mes anterior">
+        Mês anterior
+    </option>
+    <option value="3 meses">
+        Últimos 3 meses
+    </option>
+    <option value="6 meses">
+        Últimos 6 meses
+    </option>
+    <option value="Este ano">
+        Este ano
+    </option>
+    <option value="Ano passado">
+        Ano passado
+    </option>
+</select>
+<br />
+<label>Data Inicial: @dataInicial.ToShortDateString()</label>
+<br/>
+<label>Data Final @dataFinal.ToShortDateString()</label>
+@code {
+    private int currentCount = 0;
+    private DateTime dataInicial = DateTime.Now;
+    private DateTime dataFinal = DateTime.Now;
+    private readonly DateTime dataAtual = DateTime.Now;
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+    private Task ChangeDate(ChangeEventArgs e)
+    {
+        switch (e.Value)
+        {
+            case "Hoje":
+                dataInicial = dataAtual;
+                dataFinal = dataAtual;
+                break;
+            case "Ontem":
+                dataInicial = dataAtual.AddDays(-1);
+                dataFinal = dataAtual;
+                break;
+            case "Esta semana":
+                dataInicial = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
+                dataFinal = dataInicial.AddDays(7);
+                break;
+            case "Este mes":
+                dataInicial = new DateTime(dataAtual.Year, dataAtual.Month, 1);
+                dataFinal = dataInicial.AddMonths(1).AddDays(-1);
+                break;
+            case "30 dias":
+                dataInicial = dataAtual.AddDays(-30);
+                dataFinal = dataAtual;
+                break;
+            case "Mes anterior":
+                var month = new DateTime(dataAtual.Year, dataAtual.Month, 1);
+                dataInicial = month.AddMonths(-1);
+                dataFinal = month.AddDays(-1);
+                break;
+            case "3 meses":
+                month = new DateTime(dataAtual.Year, dataAtual.Month, 1);
+                month = month.AddMonths(-3);
+                dataInicial = month;
+                dataFinal = dataAtual;
+                break;
+            case "6 meses":
+                month = new DateTime(dataAtual.Year, dataAtual.Month,1);
+                month = month.AddMonths(-6);
+                dataInicial = month;
+                dataFinal = dataAtual;
+                break;
+            case "Este ano":
+                dataInicial = new DateTime(dataAtual.Year, 1, 1);
+                dataFinal = dataAtual;
+                break;
+            case "Ano passado":
+                dataInicial = new DateTime(dataAtual.AddYears(-1).Year, 1, 1);
+                dataFinal = new DateTime(dataAtual.AddYears(-1).Year, 12, 31);
+                break;
+        }
+        return Task.CompletedTask;
+    }
+}
