@@ -57,53 +57,10 @@
 
     private Task ChangeDate(ChangeEventArgs e)
     {
-        switch (e.Value)
+        if(e.Value != null)
         {
-            case "Hoje":
-                dataInicial = dataAtual;
-                dataFinal = dataAtual;
-                break;
-            case "Ontem":
-                dataInicial = dataAtual.AddDays(-1);
-                dataFinal = dataAtual;
-                break;
-            case "Esta semana":
-                dataInicial = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
-                dataFinal = dataInicial.AddDays(7);
-                break;
-            case "Este mes":
-                dataInicial = new DateTime(dataAtual.Year, dataAtual.Month, 1);
-                dataFinal = dataInicial.AddMonths(1).AddDays(-1);
-                break;
-            case "30 dias":
-                dataInicial = dataAtual.AddDays(-30);
-                dataFinal = dataAtual;
-                break;
-            case "Mes anterior":
-                var month = new DateTime(dataAtual.Year, dataAtual.Month, 1);
-                dataInicial = month.AddMonths(-1);
-                dataFinal = month.AddDays(-1);
-                break;
-            case "3 meses":
-                month = new DateTime(dataAtual.Year, dataAtual.Month, 1);
-                month = month.AddMonths(-3);
-                dataInicial = month;
-                dataFinal = dataAtual;
-                break;
-            case "6 meses":
-                month = new DateTime(dataAtual.Year, dataAtual.Month,1);
-                month = month.AddMonths(-6);
-                dataInicial = month;
-                dataFinal = dataAtual;
-                break;
-            case "Este ano":
-                dataInicial = new DateTime(dataAtual.Year, 1, 1);
-                dataFinal = dataAtual;
-                break;
-            case "Ano passado":
-                dataInicial = new DateTime(dataAtual.AddYears(-1).Year, 1, 1);
-                dataFinal = new DateTime(dataAtual.AddYears(-1).Year, 12, 31);
-                break;
+            dataInicial = DatasReutilizaveis.DataInicial(e.Value.ToString());
+            dataFinal = DatasReutilizaveis.DataFinal(e.Value.ToString());
         }
         return Task.CompletedTask;
     }
