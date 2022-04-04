@@ -56,9 +56,12 @@
                     return dataAtual;
 
                 case "Esta semana":
+                    dataInicial = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
+             
                     return dataInicial.AddDays(7);
 
                 case "Este mes":
+                    dataInicial = new DateTime(dataAtual.Year, dataAtual.Month, 1);
                     return dataInicial.AddMonths(1).AddDays(-1);
 
                 case "30 dias":
